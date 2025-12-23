@@ -1,9 +1,15 @@
 import Image from "next/image";
-import Link from "next/link";
+import AuthButton from "./components/AuthButton";
+import ProtectedLink from "./components/ProtectedLink";
 
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      {/* Auth Button - Top Right */}
+      <div className="absolute top-6 right-6">
+        <AuthButton />
+      </div>
+
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <Image
           className="dark:invert"
@@ -36,9 +42,9 @@ export default function Home() {
           </p>
         </div>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <Link
+          <ProtectedLink
             href="/dashboards"
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-5 text-white transition-all hover:bg-emerald-500 hover:scale-105 md:w-[180px]"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-5 text-white transition-all hover:bg-emerald-500 hover:scale-105 md:w-[180px] cursor-pointer"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +60,7 @@ export default function Home() {
               <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
             </svg>
             API Keys
-          </Link>
+          </ProtectedLink>
           <a
             className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
             href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
