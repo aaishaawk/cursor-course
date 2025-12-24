@@ -1,8 +1,8 @@
 "use client";
 
 import { useSession, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
 
 interface ProtectedLinkProps {
   href: string;
@@ -12,21 +12,29 @@ interface ProtectedLinkProps {
 
 export default function ProtectedLink({ href, children, className }: ProtectedLinkProps) {
   const { data: session, status } = useSession();
-  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+
+  // If user is signed in, render as a regular Link
+  if (session) {
+    return (
+      <Link href={href} className={className}>
+        {children}
+      </Link>
+    );
+  }
+
+  // If still loading, show loading state
+  if (status === "loading") {
+    return (
+      <button className={className} disabled>
+        {children}
+      </button>
+    );
+  }
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    
-    if (status === "loading") return;
-    
-    if (session) {
-      // User is signed in, navigate to the protected page
-      router.push(href);
-    } else {
-      // User is not signed in, show sign-in modal
-      setShowModal(true);
-    }
+    setShowModal(true);
   };
 
   return (
