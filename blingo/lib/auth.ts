@@ -2,11 +2,28 @@ import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { upsertUser } from "./supabase-server";
 
+// Force the correct URL for NextAuth (prevents Vercel from using preview URLs)
+const getBaseUrl = () => {
+  if (process.env.NEXTAUTH_URL) {
+    return process.env.NEXTAUTH_URL;
+  }
+  // Fallback for production
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  return "http://localhost:3000";
+};
+
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      authorization: {
+        params: {
+          redirect_uri: `${getBaseUrl()}/api/auth/callback/google`,
+        },
+      },
     }),
   ],
   callbacks: {
@@ -44,6 +61,17 @@ export const authOptions: NextAuthOptions = {
         token.googleId = profile.sub;
       }
       return token;
+    },
+    async redirect({ url, baseUrl }) {
+      // Force redirects to use the correct base URL
+      const correctBaseUrl = getBaseUrl();
+      if (url.startsWith("/")) {
+        return `${correctBaseUrl}${url}`;
+      }
+      if (url.startsWith(correctBaseUrl)) {
+        return url;
+      }
+      return correctBaseUrl;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
