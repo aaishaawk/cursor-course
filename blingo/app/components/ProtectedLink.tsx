@@ -48,41 +48,41 @@ export default function ProtectedLink({ href, children, className }: ProtectedLi
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           {/* Backdrop */}
           <div 
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setShowModal(false)}
           />
           
           {/* Modal */}
-          <div className="relative bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 animate-in fade-in zoom-in duration-200">
+          <div className="relative bg-card border border-border shadow-2xl p-8 max-w-md w-full mx-4 animate-in fade-in zoom-in duration-200">
             {/* Close button */}
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="absolute top-4 right-4 p-2 hover:bg-muted transition-colors"
             >
-              <svg className="w-5 h-5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
             {/* Content */}
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 mx-auto mb-4 bg-primary/20 flex items-center justify-center">
+                <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
               
-              <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+              <h3 className="text-xl font-semibold text-foreground mb-2">
                 Sign in required
               </h3>
-              <p className="text-zinc-600 dark:text-zinc-400 mb-6">
-                Please sign in with your Google account to access the API Keys dashboard.
+              <p className="text-muted-foreground mb-6">
+                Please sign in with your Google account to access the dashboard.
               </p>
 
               {/* Sign in button */}
               <button
                 onClick={() => signIn("google", { callbackUrl: href })}
-                className="flex items-center justify-center gap-3 w-full h-12 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-5 text-sm font-medium text-zinc-700 dark:text-zinc-200 shadow-sm transition-all hover:bg-zinc-50 dark:hover:bg-zinc-700 hover:shadow-md"
+                className="flex items-center justify-center gap-3 w-full h-12 border border-border bg-card px-5 text-sm font-medium text-foreground shadow-sm transition-all hover:bg-muted"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24">
                   <path
@@ -105,7 +105,7 @@ export default function ProtectedLink({ href, children, className }: ProtectedLi
                 Sign in with Google
               </button>
 
-              <p className="mt-4 text-xs text-zinc-500">
+              <p className="mt-4 text-xs text-muted-foreground">
                 You'll be redirected to {href} after signing in.
               </p>
             </div>

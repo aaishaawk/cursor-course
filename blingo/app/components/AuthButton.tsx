@@ -8,8 +8,8 @@ export default function AuthButton() {
 
   if (status === "loading") {
     return (
-      <div className="flex h-12 w-[180px] items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-600"></div>
+      <div className="flex h-10 w-[160px] items-center justify-center border border-border bg-card">
+        <div className="h-5 w-5 animate-spin border-2 border-muted-foreground border-t-primary"></div>
       </div>
     );
   }
@@ -27,13 +27,13 @@ export default function AuthButton() {
               className="rounded-full"
             />
           )}
-          <span className="hidden text-sm font-medium text-zinc-700 dark:text-zinc-300 sm:inline">
+          <span className="hidden text-sm font-medium text-foreground sm:inline">
             {session.user?.name}
           </span>
         </div>
         <button
           onClick={() => signOut()}
-          className="flex h-10 items-center justify-center gap-2 rounded-full border border-zinc-200 px-4 text-sm font-medium text-zinc-700 transition-all hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900"
+          className="flex h-10 items-center justify-center gap-2 border border-border px-4 text-sm font-medium text-foreground transition-all hover:bg-muted"
         >
           Sign Out
         </button>
@@ -44,7 +44,7 @@ export default function AuthButton() {
   return (
     <button
       onClick={() => signIn("google")}
-      className="flex h-12 w-full items-center justify-center gap-3 rounded-full border border-zinc-200 bg-white px-5 text-sm font-medium text-zinc-700 shadow-sm transition-all hover:bg-zinc-50 hover:shadow-md dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 md:w-[220px]"
+      className="flex h-10 w-full items-center justify-center gap-3 border border-border bg-card px-5 text-sm font-medium text-foreground shadow-sm transition-all hover:bg-muted md:w-[200px]"
     >
       <svg className="h-5 w-5" viewBox="0 0 24 24">
         <path
