@@ -7,18 +7,18 @@ interface HeaderProps {
 
 export function Header({ title, breadcrumb = "Pages / Overview" }: HeaderProps) {
   return (
-    <header className="bg-white border-b border-gray-200 px-8 py-4">
-      <div className="flex items-center justify-between">
+    <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-8 py-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <p className="text-sm text-gray-500">{breadcrumb}</p>
-          <h1 className="text-2xl font-semibold text-gray-900 mt-1">{title}</h1>
+          <p className="text-xs sm:text-sm text-gray-500">{breadcrumb}</p>
+          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mt-1">{title}</h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
           <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-full">
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="text-sm font-medium text-emerald-700">Operational</span>
+            <span className="text-xs sm:text-sm font-medium text-emerald-700">Operational</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-2">
             <SocialButton icon="github" />
             <SocialButton icon="twitter" />
             <SocialButton icon="email" />

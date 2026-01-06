@@ -10,18 +10,18 @@ export function PlanCard({ totalUsage, usageLimit = 1000 }: PlanCardProps) {
 
   return (
     <div
-      className="rounded-2xl p-6 mb-8 relative overflow-hidden"
+      className="rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 relative overflow-hidden"
       style={{
         background:
           "linear-gradient(135deg, #667eea 0%, #a855f7 25%, #ec4899 50%, #f97316 75%, #fbbf24 100%)",
       }}
     >
       <div className="relative z-10">
-        <div className="flex items-start justify-between mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 sm:mb-6">
           <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold text-white uppercase tracking-wide">
             Current Plan
           </span>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors">
+          <button className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-lg text-white text-xs sm:text-sm font-medium transition-colors">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
@@ -34,7 +34,7 @@ export function PlanCard({ totalUsage, usageLimit = 1000 }: PlanCardProps) {
           </button>
         </div>
 
-        <h2 className="text-4xl font-bold text-white mb-8">Researcher</h2>
+        <h2 className="text-2xl sm:text-4xl font-bold text-white mb-6 sm:mb-8">Researcher</h2>
 
         <div>
           <div className="flex items-center gap-2 mb-2">

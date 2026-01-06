@@ -52,47 +52,77 @@ export function ApiKeyTable({
 
   return (
     <>
-      <table className="w-full">
-        <thead>
-          <tr className="border-b border-gray-100">
-            <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-            <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Usage</th>
-            <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
-            <th className="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Options</th>
-          </tr>
-        </thead>
-        <tbody>
-          {apiKeys.map((apiKey) => (
-            <tr key={apiKey.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50/50 transition-colors">
-              <td className="px-6 py-4">
-                <span className="text-sm text-gray-900">{apiKey.name}</span>
-              </td>
-              <td className="px-6 py-4">
-                <span className="text-sm text-gray-600">{apiKey.usage}</span>
-              </td>
-              <td className="px-6 py-4">
-                <code className="px-3 py-1.5 bg-gray-100 rounded-md font-mono text-sm text-gray-600">
-                  {visibleKeys.has(apiKey.id) ? apiKey.key : maskKey(apiKey.key)}
-                </code>
-              </td>
-              <td className="px-6 py-4">
-                <div className="flex items-center justify-end gap-1">
-                  <VisibilityButton
-                    isVisible={visibleKeys.has(apiKey.id)}
-                    onClick={() => toggleKeyVisibility(apiKey.id)}
-                  />
-                  <CopyButton
-                    isCopied={copiedId === apiKey.id}
-                    onClick={() => handleCopy(apiKey)}
-                  />
-                  <EditButton onClick={() => onEdit(apiKey)} />
-                  <DeleteButton onClick={() => onDelete(apiKey.id)} />
-                </div>
-              </td>
+      {/* Mobile Card View */}
+      <div className="sm:hidden divide-y divide-gray-100">
+        {apiKeys.map((apiKey) => (
+          <div key={apiKey.id} className="p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-900">{apiKey.name}</span>
+              <span className="text-xs text-gray-500">Usage: {apiKey.usage}</span>
+            </div>
+            <code className="block px-3 py-2 bg-gray-100 rounded-md font-mono text-xs text-gray-600 overflow-x-auto">
+              {visibleKeys.has(apiKey.id) ? apiKey.key : maskKey(apiKey.key)}
+            </code>
+            <div className="flex items-center justify-end gap-1">
+              <VisibilityButton
+                isVisible={visibleKeys.has(apiKey.id)}
+                onClick={() => toggleKeyVisibility(apiKey.id)}
+              />
+              <CopyButton
+                isCopied={copiedId === apiKey.id}
+                onClick={() => handleCopy(apiKey)}
+              />
+              <EditButton onClick={() => onEdit(apiKey)} />
+              <DeleteButton onClick={() => onDelete(apiKey.id)} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden sm:block overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-gray-100">
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Usage</th>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
+              <th className="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Options</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {apiKeys.map((apiKey) => (
+              <tr key={apiKey.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50/50 transition-colors">
+                <td className="px-6 py-4">
+                  <span className="text-sm text-gray-900">{apiKey.name}</span>
+                </td>
+                <td className="px-6 py-4">
+                  <span className="text-sm text-gray-600">{apiKey.usage}</span>
+                </td>
+                <td className="px-6 py-4">
+                  <code className="px-3 py-1.5 bg-gray-100 rounded-md font-mono text-sm text-gray-600">
+                    {visibleKeys.has(apiKey.id) ? apiKey.key : maskKey(apiKey.key)}
+                  </code>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center justify-end gap-1">
+                    <VisibilityButton
+                      isVisible={visibleKeys.has(apiKey.id)}
+                      onClick={() => toggleKeyVisibility(apiKey.id)}
+                    />
+                    <CopyButton
+                      isCopied={copiedId === apiKey.id}
+                      onClick={() => handleCopy(apiKey)}
+                    />
+                    <EditButton onClick={() => onEdit(apiKey)} />
+                    <DeleteButton onClick={() => onDelete(apiKey.id)} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {apiKeys.length === 0 && (
         <div className="px-6 py-12 text-center">

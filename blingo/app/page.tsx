@@ -32,12 +32,12 @@ export default function LandingPage() {
           <div className="inline-block px-4 py-2 bg-amber-50 border border-amber-300 text-amber-800 rounded-full text-sm font-semibold shadow-sm">
             🎮 Powered by Doom 64 Technology
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-pretty">Deep Dive into Open Source</h1>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-pretty">Deep Dive into Open Source</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
             Analyze GitHub repositories with instant insights. Discover stars, pull requests, version updates, cool
             facts, and everything you need to know about open source projects.
           </p>
-          <div className="flex gap-4 justify-center pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4">
             <ProtectedLink
               href="/dashboards"
               className="group inline-flex items-center justify-center gap-2.5 whitespace-nowrap text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-amber-400 hover:bg-amber-500 text-amber-950 shadow-lg shadow-amber-400/25 hover:shadow-xl hover:shadow-amber-400/30 hover:-translate-y-0.5 h-12 px-7 rounded-xl cursor-pointer"
@@ -47,7 +47,7 @@ export default function LandingPage() {
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </ProtectedLink>
             <Button variant="outline" size="lg" asChild className="cursor-pointer bg-white/80 hover:bg-white border-2 border-gray-200 hover:border-gray-300 rounded-xl h-12 px-7 font-semibold transition-all duration-200 hover:-translate-y-0.5 shadow-sm hover:shadow-md">
-              <a href="#features" className="flex items-center gap-2.5">
+              <a href="#features" className="flex items-center justify-center gap-2.5">
                 <BookOpen className="w-4 h-4" />
                 Learn More
               </a>
@@ -59,7 +59,7 @@ export default function LandingPage() {
       {/* Features Section */}
       <section className="px-4 py-20 md:px-8 border-b border-border">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-16 text-pretty">Powerful Analytics at Your Fingertips</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 sm:mb-16 text-pretty">Powerful Analytics at Your Fingertips</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Feature 1 */}
             <Card className="p-6 space-y-4 border-border">
@@ -133,14 +133,14 @@ export default function LandingPage() {
       {/* Pricing Section */}
       <section id="pricing" className="px-4 py-20 md:px-8 border-b border-border">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-4 text-pretty">Simple, Transparent Pricing</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 text-pretty">Simple, Transparent Pricing</h2>
           <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
             Start free and upgrade whenever you need more power.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid gap-6 md:gap-8 md:grid-cols-3">
             {/* Free Tier */}
-            <Card className="p-8 space-y-6 border-border relative">
+            <Card className="p-6 sm:p-8 space-y-6 border-border relative">
               <div>
                 <h3 className="text-2xl font-bold">Starter</h3>
                 <p className="text-muted-foreground text-sm mt-1">Perfect for exploration</p>
@@ -176,7 +176,7 @@ export default function LandingPage() {
             </Card>
 
             {/* Pro Tier */}
-            <Card className="p-8 space-y-6 border-amber-400 border-2 relative md:scale-105 shadow-lg shadow-amber-100">
+            <Card className="p-6 sm:p-8 space-y-6 border-amber-400 border-2 relative md:scale-105 md:-my-2 shadow-lg shadow-amber-100 order-first md:order-none">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-950 px-4 py-1.5 rounded-full text-xs font-bold shadow-md">
                 POPULAR
               </div>
@@ -216,7 +216,7 @@ export default function LandingPage() {
             </Card>
 
             {/* Enterprise Tier */}
-            <Card className="p-8 space-y-6 border-border">
+            <Card className="p-6 sm:p-8 space-y-6 border-border">
               <div>
                 <h3 className="text-2xl font-bold">Enterprise</h3>
                 <p className="text-muted-foreground text-sm mt-1">For teams & organizations</p>
@@ -254,11 +254,11 @@ export default function LandingPage() {
       {/* CTA Section */}
       <section className="px-4 py-20 md:px-8 border-b border-border">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-4xl font-bold text-pretty">Ready to Unlock GitHub Insights?</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-pretty">Ready to Unlock GitHub Insights?</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
             Join thousands of developers analyzing open source projects with Blingo.
           </p>
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <ProtectedLink
               href="/dashboards"
               className="group inline-flex items-center justify-center gap-2.5 whitespace-nowrap text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-amber-400 hover:bg-amber-500 text-amber-950 shadow-lg shadow-amber-400/25 hover:shadow-xl hover:shadow-amber-400/30 hover:-translate-y-0.5 h-12 px-7 rounded-xl cursor-pointer"
@@ -268,7 +268,7 @@ export default function LandingPage() {
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </ProtectedLink>
             <Button variant="outline" size="lg" asChild className="cursor-pointer bg-white/80 hover:bg-white border-2 border-gray-200 hover:border-gray-300 rounded-xl h-12 px-7 font-semibold transition-all duration-200 hover:-translate-y-0.5 shadow-sm hover:shadow-md">
-              <a href="#pricing" className="flex items-center gap-2">
+              <a href="#pricing" className="flex items-center justify-center gap-2">
                 <Tag className="w-4 h-4" />
                 View Pricing
               </a>
@@ -280,7 +280,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="px-4 py-12 md:px-8 bg-card/50">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Github className="w-6 h-6 text-primary" />

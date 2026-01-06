@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import UserMenu from "./_components/UserMenu";
@@ -11,7 +11,24 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Close mobile menu on resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const navItems = [
     { name: "Overview", icon: "home", href: "/dashboards" },
@@ -31,11 +48,47 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Mobile Header */}
+      <div className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-30 md:hidden">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+            <span className="text-white font-bold text-sm">B</span>
+          </div>
+          <span className="text-xl font-semibold text-gray-900">Blingo</span>
+        </Link>
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+        >
+          {mobileMenuOpen ? (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
+      </div>
+
+      {/* Sidebar - Desktop & Mobile */}
       <aside
-        className={`${
-          sidebarOpen ? "w-64" : "w-20"
-        } bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out`}
+        className={`
+          fixed md:static inset-y-0 left-0 z-50
+          ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"} 
+          md:translate-x-0
+          ${sidebarOpen ? "w-64" : "md:w-20 w-64"} 
+          bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out
+        `}
       >
         {/* Logo */}
         <div className="p-6 border-b border-gray-100 flex items-center justify-between">
@@ -51,10 +104,10 @@ export default function DashboardLayout({
           </Link>
         </div>
 
-        {/* Toggle Button */}
+        {/* Toggle Button - Hidden on mobile */}
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="mx-4 mt-4 p-2 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors flex items-center justify-center"
+          className="hidden md:flex mx-4 mt-4 p-2 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors items-center justify-center"
           title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
         >
           <svg
@@ -211,7 +264,7 @@ export default function DashboardLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">{children}</main>
+      <main className="flex-1 overflow-auto pt-16 md:pt-0">{children}</main>
     </div>
   );
 }

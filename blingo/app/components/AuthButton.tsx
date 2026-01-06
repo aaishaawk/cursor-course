@@ -8,15 +8,15 @@ export default function AuthButton() {
 
   if (status === "loading") {
     return (
-      <div className="flex h-10 w-[160px] items-center justify-center border border-border bg-card">
-        <div className="h-5 w-5 animate-spin border-2 border-muted-foreground border-t-primary"></div>
+      <div className="flex h-10 w-10 sm:w-[160px] items-center justify-center border border-border bg-card rounded-xl">
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-muted-foreground border-t-primary"></div>
       </div>
     );
   }
 
   if (session) {
     return (
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <div className="flex items-center gap-2">
           {session.user?.image && (
             <Image
@@ -27,15 +27,18 @@ export default function AuthButton() {
               className="rounded-full"
             />
           )}
-          <span className="hidden text-sm font-medium text-foreground sm:inline">
+          <span className="hidden text-sm font-medium text-foreground lg:inline">
             {session.user?.name}
           </span>
         </div>
         <button
           onClick={() => signOut()}
-          className="flex h-10 items-center justify-center gap-2 border border-border px-4 text-sm font-medium text-foreground transition-all hover:bg-muted"
+          className="flex h-10 items-center justify-center gap-2 border-2 border-gray-200 hover:border-gray-300 px-3 sm:px-4 text-sm font-medium text-foreground transition-all hover:bg-gray-50 rounded-xl"
         >
-          Sign Out
+          <span className="hidden sm:inline">Sign Out</span>
+          <svg className="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
         </button>
       </div>
     );
@@ -44,9 +47,9 @@ export default function AuthButton() {
   return (
     <button
       onClick={() => signIn("google")}
-      className="flex h-10 w-full items-center justify-center gap-3 border border-border bg-card px-5 text-sm font-medium text-foreground shadow-sm transition-all hover:bg-muted md:w-[200px]"
+      className="flex h-10 w-full items-center justify-center gap-2 sm:gap-3 border-2 border-gray-200 hover:border-gray-300 bg-white/80 hover:bg-white px-3 sm:px-5 text-sm font-medium text-foreground shadow-sm transition-all hover:shadow-md rounded-xl md:w-[200px]"
     >
-      <svg className="h-5 w-5" viewBox="0 0 24 24">
+      <svg className="h-5 w-5 flex-shrink-0" viewBox="0 0 24 24">
         <path
           d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
           fill="#4285F4"
@@ -64,7 +67,8 @@ export default function AuthButton() {
           fill="#EA4335"
         />
       </svg>
-      Sign in with Google
+      <span className="hidden sm:inline">Sign in with Google</span>
+      <span className="sm:hidden">Sign in</span>
     </button>
   );
 }
