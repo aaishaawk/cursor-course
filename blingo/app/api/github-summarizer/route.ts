@@ -5,6 +5,14 @@ import {
   incrementUsage, 
   DEFAULT_RATE_LIMIT 
 } from "@/lib/rate-limit";
+import {
+  parseGithubUrl,
+  getRepoInfo,
+  getLatestRelease,
+  getReadmeContent,
+  RepoInfo,
+  ReleaseInfo,
+} from "@/lib/github";
 
 // CORS headers helper
 const corsHeaders = {
@@ -28,36 +36,6 @@ function getApiKeyFromRequest(request: NextRequest): string | null {
     request.headers.get("Authorization")?.replace("Bearer ", "") ||
     null
   );
-}
-
-// Fetch README content from GitHub repo
-async function getReadmeContent(githubUrl: string): Promise<{ content: string | null; error?: string }> {
-  try {
-    const match = githubUrl.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/]+)(\/.*)?$/);
-    if (!match) return { content: null, error: "Invalid GitHub URL format" };
-
-    const owner = match[1];
-    const repo = match[2];
-
-    for (const branch of ["main", "master"]) {
-      const readmeUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/README.md`;
-      console.log(`Fetching README from: ${readmeUrl}`);
-      
-      const response = await fetch(readmeUrl);
-      console.log(`Response status: ${response.status}`);
-      
-      if (response.ok) {
-        return { content: await response.text() };
-      }
-    }
-    return { content: null, error: "README not found in main or master branch" };
-  } catch (err) {
-    console.error("GitHub fetch error:", err);
-    return { 
-      content: null, 
-      error: `Network error fetching README: ${err instanceof Error ? err.message : "Unknown"}` 
-    };
-  }
 }
 
 // CORS preflight handler
@@ -142,19 +120,44 @@ export async function POST(request: NextRequest) {
   // Allow direct README content for testing
   let readmeContent: string | null = null;
   let fetchError: string | undefined;
+  let parsedRepo: { owner: string; repo: string } | null = null;
+  let repoInfo: RepoInfo = { stars: null, forks: null, openIssues: null, language: null, description: null, homepage: null, license: null };
+  let releaseInfo: ReleaseInfo = { latestVersion: null, releaseName: null, releaseDate: null, releaseUrl: null };
 
-  if (providedReadme) {
-    console.log("📄 Using provided README content");
-    readmeContent = providedReadme;
-  } else if (githubUrl) {
+  // Parse GitHub URL if provided (for fetching stars, version, etc.)
+  if (githubUrl) {
     const isValidGithubUrl = /^https:\/\/github\.com\/[^\/]+\/[^\/]+/.test(githubUrl);
     if (!isValidGithubUrl) {
       return jsonResponse({ error: "Invalid GitHub URL format. Expected: https://github.com/owner/repo" }, 400);
     }
+    parsedRepo = parseGithubUrl(githubUrl);
+  }
 
-    const result = await getReadmeContent(githubUrl);
-    readmeContent = result.content;
-    fetchError = result.error;
+  if (providedReadme) {
+    // README provided directly - only fetch repo info and release in parallel
+    console.log("📄 Using provided README content");
+    readmeContent = providedReadme;
+    
+    if (parsedRepo) {
+      const [repoResult, releaseResult] = await Promise.all([
+        getRepoInfo(parsedRepo.owner, parsedRepo.repo),
+        getLatestRelease(parsedRepo.owner, parsedRepo.repo),
+      ]);
+      repoInfo = repoResult;
+      releaseInfo = releaseResult;
+    }
+  } else if (githubUrl && parsedRepo) {
+    // No README provided - fetch ALL THREE in parallel for maximum speed
+    console.log("🚀 Fetching README, repo info, and release in parallel");
+    const [readmeResult, repoResult, releaseResult] = await Promise.all([
+      getReadmeContent(githubUrl),
+      getRepoInfo(parsedRepo.owner, parsedRepo.repo),
+      getLatestRelease(parsedRepo.owner, parsedRepo.repo),
+    ]);
+    readmeContent = readmeResult.content;
+    fetchError = readmeResult.error;
+    repoInfo = repoResult;
+    releaseInfo = releaseResult;
   } else {
     return jsonResponse({ error: "Either githubUrl or readmeContent is required" }, 400);
   }
@@ -166,6 +169,12 @@ export async function POST(request: NextRequest) {
       hasReadme: false,
       summary: null,
       cool_facts: [],
+      stars: repoInfo.stars,
+      forks: repoInfo.forks,
+      language: repoInfo.language,
+      homepage: repoInfo.homepage,
+      license: repoInfo.license,
+      latestVersion: releaseInfo.latestVersion,
       error: fetchError || "No README found in this repository.",
     });
   }
@@ -194,6 +203,20 @@ export async function POST(request: NextRequest) {
     readmePreview: readmeContent.slice(0, 500) + (readmeContent.length > 500 ? "..." : ""),
     summary: summaryResult.summary,
     cool_facts: summaryResult.cool_facts,
+    // Repository stats
+    stars: repoInfo.stars,
+    forks: repoInfo.forks,
+    openIssues: repoInfo.openIssues,
+    language: repoInfo.language,
+    description: repoInfo.description,
+    homepage: repoInfo.homepage,
+    license: repoInfo.license,
+    // Version info
+    latestVersion: releaseInfo.latestVersion,
+    releaseName: releaseInfo.releaseName,
+    releaseDate: releaseInfo.releaseDate,
+    releaseUrl: releaseInfo.releaseUrl,
+    // Usage stats
     usage: currentUsage,
     limit: DEFAULT_RATE_LIMIT,
     remaining: DEFAULT_RATE_LIMIT - currentUsage,
