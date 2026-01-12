@@ -91,6 +91,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- 8. Create atomic increment function for API key usage
+CREATE OR REPLACE FUNCTION increment_api_key_usage(key_id UUID)
+RETURNS void AS $$
+BEGIN
+    UPDATE api_keys
+    SET usage = usage + 1,
+        updated_at = NOW()
+    WHERE id = key_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 -- Done!
 SELECT 'Schema fix complete!' as status;
 
